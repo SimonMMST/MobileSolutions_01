@@ -5,34 +5,37 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.view.Window
 import android.widget.ProgressBar
 import android.widget.TextView
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
-    private var progressBarHor: ProgressBar? = null
-    private var progressBarVer: ProgressBar? = null
-    lateinit var sensorManager: SensorManager
+    private lateinit var progressBarHor: ProgressBar
+    private lateinit var progressBarVer: ProgressBar
+    private lateinit var sensorManager: SensorManager
     lateinit var sensor: Sensor
-    lateinit var textView: TextView
-    lateinit var acceleroEventListener: AcceleroEventListener
+    private lateinit var textView: TextView
+    private lateinit var acceleroEventListener: AcceleroEventListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        progressBarHor = findViewById<ProgressBar>(R.id.progressBarHorizontal) as ProgressBar
-        progressBarVer = findViewById<ProgressBar>(R.id.progressBarVertical) as ProgressBar
+        progressBarHor = findViewById(R.id.progressBarHorizontal)
+        progressBarVer = findViewById(R.id.progressBarVertical)
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
         textView = findViewById(R.id.Text)
         textView.movementMethod = ScrollingMovementMethod()
 
-        acceleroEventListener = AcceleroEventListener(progressBarHor!!,progressBarVer!!,textView)
+        acceleroEventListener = AcceleroEventListener(progressBarHor, progressBarVer)
 
-        sensorManager.registerListener(acceleroEventListener,sensor,SensorManager.SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(
+            acceleroEventListener,
+            sensor,
+            SensorManager.SENSOR_DELAY_NORMAL
+        )
     }
 
     override fun onStart() {
